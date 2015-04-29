@@ -2,18 +2,46 @@
 {% load staticfiles %}
 
 {% compress js %}
-<script type="text/javascript" src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
-<script type="text/javascript" src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
+<script type="text/javascript" src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'bower_components/bootstrap-material-design/dist/js/material.js' %}"></script>
 <script type="text/javascript" src="{% static 'bower_components/bootstrap-material-design/dist/js/ripples.js' %}"></script>
+<!-- for backbone  and marionette -->
 <script type="text/javascript" src="{% static 'bower_components/underscore/underscore.js' %}"></script>
+<script type="text/javascript" src="{% static 'bower_components/backbone/backbone.js' %}"></script>
+<script type="text/javascript" src="{% static 'bower_components/marionette/lib/backbone.marionette.min.js' %}"></script>
+<!-- for backbone-forms -->
+<script type="text/javascript" src="{% static 'bower_components/backbone-forms/distribution/backbone-forms.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'bower_components/backbone-forms/distribution/editors/list.min.js' %}"></script>
 
-<script type="text/javascript" src="{% static 'bower_components/angular/angular.js' %}"></script>
-<script type="text/javascript" src="{% static 'bower_components/angular-route/angular-route.js' %}"></script>
-<script type="text/javascript" src="{% static 'bower_components/angular-cookies/angular-cookies.js' %}"></script>
 
-<script type="text/javascript" src="{% static 'bower_components/ngDialog/js/ngDialog.js' %}"></script>
-<script type="text/javascript" src="{% static 'lib/snackbarjs/snackbar.min.js' %}"></script>
 
-<script type="text/javascript" src="{% static 'javascripts/thinkster.js' %}"></script>
+
+<!--
+<script type="text/template" id="template">
+	 <form class="bs-component" enctype="multipart/form-data">
+	 	<div class="form-group">
+	 		<div class="form-control-wrapper">
+	     		<div class="form-control empty" id="focusedInput" data-fields="email"></div>
+	     	</div>
+     	</div>
+     	<div class="form-group">
+	     	<div class="form-control-wrapper">
+	     		<div data-fields="password"></div>
+	     	</div>
+		</div>	     	
+	 </form>
+ </script> 
+ -->
+
+
+<!-- My Backbone application
+<script type="text/javascript" src="{% static 'javascripts/my_backbone/auth.js' %}"></script>
+<script type="text/javascript" src="{% static 'javascripts/my_backbone/app.js' %}"></script>
+-->
+
+<!-- My marionettr application-->
+<script type="text/javascript" src="{% static 'application/app.js' %}"></script>
+<script type="text/javascript" src="{% static 'application/auth.js' %}"></script>
+
 {% endcompress %}
