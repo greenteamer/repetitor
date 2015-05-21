@@ -15,8 +15,6 @@
 <script type="text/javascript" src="{% static 'bower_components/backbone-forms/distribution/editors/list.min.js' %}"></script>
 
 
-
-
 <!--
 <script type="text/template" id="template">
 	 <form class="bs-component" enctype="multipart/form-data">
@@ -35,13 +33,26 @@
  -->
 
 
-<!-- My Backbone application
-<script type="text/javascript" src="{% static 'javascripts/my_backbone/auth.js' %}"></script>
-<script type="text/javascript" src="{% static 'javascripts/my_backbone/app.js' %}"></script>
--->
+<!-- My Backbone application-->
+{#<script type="text/javascript" src="{% static 'javascripts/my_backbone/auth.js' %}"></script>#}
+{#<script type="text/javascript" src="{% static 'javascripts/my_backbone/app.js' %}"></script>#}
 
-<!-- My marionettr application-->
-<script type="text/javascript" src="{% static 'application/app.js' %}"></script>
-<script type="text/javascript" src="{% static 'application/auth.js' %}"></script>
 
+
+<!-- for react -->
+<script type="text/javascript" src="{% static 'bower_components/react/react.js' %}"></script>
+<script type="text/javascript" src="{% static 'bower_components/react/JSXTransformer.js' %}"></script>
+<script src="{% static 'bower_components/react-bootstrap/react-bootstrap.min.js' %}"></script>
+<script>
+  var Alert = ReactBootstrap.Alert;
+</script>
+<script type="text/jsx" src="{% static 'bower_components/react/marked.min.js' %}"></script>
+<script type="text/jsx" src="{% static 'bower_components/backbone-react-component/lib/component.js' %}"></script>
+<script type="text/jsx" src="{% static 'bower_components/backbone-react-component/lib/jquery.cookie.js' %}"></script>
+<script type="text/jsx" src="{% static 'application/main.js' %}"></script>
+<script type="text/jsx" src="{% static 'application/app.js' %}"></script>
+<script type="text/jsx" src="{% static 'application/sidebar.js' %}"></script>
+{#<!--<script type="text/javascript" src="{% static 'application/auth.js' %}"></script>-->#}
+
+{#<script type="text/javascript" src="{% static 'application/marionette.js' %}"></script>#}
 {% endcompress %}

@@ -4,21 +4,28 @@ from rest_framework import serializers
 from authentication.models import Account
 
 
+class UserSerializers(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Account
+        fields = ('id', 'username', 'email', 'is_staff')
+
+
 class AccountSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
     confirm_password = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = Account
-        fields = ('id', 'email', 'username', 'created_at', 'updated_at', 'first_name', 'last_name', 'tagline',
-                  'password', 'confirm_password',)
+        fields = ('id', 'email', 'username', 'created_at', 'updated_at', 'first_name', 'last_name', 'tagline', 'password', 'confirm_password',)
         read_only_fields = ('created_at', 'updated_at',)
 
         def create(self, validated_data):
             return Account.objects.create(**validated_data)
 
         def update(self, instance, validated_data):
-            instance.username = validated_data.get('username', instance.username)
+            instance.username = validated_data.get(
+                'username', instance.username
+            )
             instance.tagline = validated_data.get('tagline', instance.tagline)
 
             instance.save()
@@ -33,4 +40,3 @@ class AccountSerializer(serializers.ModelSerializer):
             update_session_auth_hash(self.context.get('request'), None)
 
             return instance
-

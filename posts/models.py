@@ -10,5 +10,5 @@ class Post(models.Model):
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
 
-    def __unicode__(self):
-        return '{0}'.format(self.content)
+    def __unicode__(self):    	
+        return self.author.username

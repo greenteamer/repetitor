@@ -1,4 +1,4 @@
-<nav ng-controller="NavbarController as vm" class="navbar navbar-default" role="navigation">
+<nav id="top-menu" class="navbar navbar-default" role="navigation">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#not-google-plus-nav">
@@ -15,7 +15,7 @@
         {% if user.is_authenticated %}
           <li><a href="/+{{ user.username }}">+{{ user.username }}</a></li>
           <li><a href="/+{{ user.username }}/settings">Настройки</a></li>
-          <li><a href="javascript:void(0)" ng-click="vm.logout()">Выйти</a></li>
+          <li><a href="javascript:void(0)" id="logout_btn">Выйти</a></li>
         {% else %}
           <li><a href="/login">Войти</a></li>
           <li><a href="/register">Зарегистрироваться</a></li>

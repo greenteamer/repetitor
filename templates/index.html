@@ -7,13 +7,32 @@
 
 <body>
   {% include 'navbar.html' %}  
-
+	
   <div class="container-fluid">
-    <div class="backbone"></div>
+  	<div class="row">
+  		<div class="col-xs-12 col-md-3" >
+  			<div id="sidebar">
+        <form action="." method="post">
+          {% csrf_token %}       
+          <input type="text" class="form-control" placeholder="label" />   
+        </form>   
+        </div>
+  		</div>
+  		<div class="col-xs-12 col-md-9" >
+  			<div id="content"></div>
+        
+        <div id="posts"></div>
+
+{#            <button class="btn" id="test">test</button>#}
+        {# <a href="/foo">ссылка</a> #}
+  		</div>
+  	</div>
   </div>
 
+  
+  {# <button id="test_btn" class="btn btn-primary btn-fab btn-raised mdi-content-add btn-add-new-post"  style="right:20px;" href=""></button> #}
 
-  <button id="login_btn" class="btn btn-primary btn-fab btn-raised mdi-content-add btn-add-new-post"  style="left:20px;" href=""></button>
+  {# <button id="login_btn" class="btn btn-primary btn-fab btn-raised mdi-content-add btn-add-new-post"  style="left:20px;" href=""></button> #}
 
   {% include 'modal.html' %}
 

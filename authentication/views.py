@@ -4,13 +4,32 @@ from rest_framework import permissions, viewsets, status, views
 
 from authentication.models import Account
 from authentication.permissions import IsAccountOwner
-from authentication.serializers import AccountSerializer
+from authentication.serializers import AccountSerializer, UserSerializers
 
 import json
 
 from django.contrib.auth import authenticate, login, logout
 
 from rest_framework.response import Response
+
+
+class CurrentUserView(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    def get(self, request):
+        serializer = UserSerializers(request.user)
+        return Response(serializer.data)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.all()
+    serializer_class = UserSerializers
+
+    # def get(self, request, format=None):
+    #     content = {
+    #         'user': unicode(request.user),  # `django.contrib.auth.User` instance.
+    #         'auth': unicode(request.auth),  # None
+    #     }
+    #     return Response(content)
 
 
 class AccountViewSet(viewsets.ModelViewSet):
@@ -33,7 +52,9 @@ class AccountViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             Account.objects.create_user(**serializer.validated_data)
 
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            return Response(
+                serializer.validated_data, status=status.HTTP_201_CREATED
+            )
 
         return Response({
             'status': 'Bad request',
