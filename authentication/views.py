@@ -1,23 +1,69 @@
 # -*- coding: utf-8 -*-
+from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import permissions, viewsets, status, views
+from rest_framework.decorators import api_view
 
 from authentication.models import Account
 from authentication.permissions import IsAccountOwner
 from authentication.serializers import AccountSerializer, UserSerializers
 
+from django.views.decorators.csrf import csrf_protect
+
 import json
 
 from django.contrib.auth import authenticate, login, logout
-
 from rest_framework.response import Response
 
 
 class CurrentUserView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request):
-        serializer = UserSerializers(request.user)
-        return Response(serializer.data)
+        try:
+            serializer = UserSerializers(request.user)
+            return Response(serializer.data)
+        except:
+            pass
+
+
+@csrf_protect
+def def_login_api(request):
+    if request.method == 'POST':
+        postdata = request.POST.copy()
+        email = postdata.get('email', None)
+        password = postdata.get('password', None)
+
+        account = authenticate(email=email, password=password)
+
+        if account is not None:
+            if account.is_active:
+                login(request, account)
+                data = json.dumps({
+                    'email': email,
+                    'username': account.username,
+                    'message': u'Вы авторизировались, Ваш аккаунт: %s.' % email,
+                    'status': 'ok'
+                })
+            else:
+                return HttpResponse(json.dumps({
+                    'message': u'Вы не авторизировались, аккаунт %s был отключен.' % email,
+                    'status': 'fail'
+                }), )
+        else:
+            return HttpResponse(json.dumps({
+                'message': u'Вы не авторизировались, email или пароль не верны.',
+                'status': 'fail'
+                }), content_type="application/json")
+
+    if request.method == 'GET':
+
+        logout(request)
+        data = json.dumps({
+            'message': u'Вы успешно вышли',
+            'status': 'ok'
+        })
+
+    return HttpResponse(data, content_type="application/json")
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -60,40 +106,3 @@ class AccountViewSet(viewsets.ModelViewSet):
             'status': 'Bad request',
             'message': u'Аккаунт не может быть создан с полученными данными.'
         }, status=status.HTTP_400_BAD_REQUEST)
-
-
-class LoginView(views.APIView):
-    def post(self, request, format=None):
-        data = json.loads(request.body)
-
-        email = data.get('email', None)
-        password = data.get('password', None)
-
-        account = authenticate(email=email, password=password)
-
-        if account is not None:
-            if account.is_active:
-                login(request, account)
-
-                serialized = AccountSerializer(account)
-
-                return Response(serialized.data)
-            else:
-                return Response({
-                    'status': u'Не авторизирован',
-                    'message': u'Этот аккаунт был отключен.'
-                }, status.HTTP_401_UNAUTHORIZED)
-        else:
-            return Response({
-                'status': u'Не авторизирован',
-                'message': u'Имя пользователя или пароль не верны.'
-            }, status.HTTP_401_UNAUTHORIZED)
-
-
-class LogoutView(views.APIView):
-    permission_classes = (permissions.IsAuthenticated, )
-
-    def post(self, request, format=None):
-        logout(request)
-
-        return Response({}, status.HTTP_204_NO_CONTENT)

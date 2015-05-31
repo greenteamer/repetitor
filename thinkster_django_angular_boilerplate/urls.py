@@ -3,7 +3,7 @@ from django.conf.urls import patterns, url, include
 from thinkster_django_angular_boilerplate.views import IndexView
 from rest_framework_nested import routers
 from authentication.views import AccountViewSet, UserViewSet, CurrentUserView
-from authentication.views import LoginView, LogoutView
+from authentication.views import def_login_api
 from posts.views import PostViewSet, AccountPostsViewSet
 from django.contrib import admin
 admin.autodiscover()
@@ -22,10 +22,10 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/v1/', include(router.urls)),
     url(r'^api/v1/', include(accounts_router.urls)),
-    url(r'^api/v1/auth/login/$', LoginView.as_view(), name='login'),
-    url(r'^api/v1/auth/logout/$', LogoutView.as_view(), name='logout'),
-    url(r'^api/v1/auth/current-user/$', CurrentUserView.as_view(), name='currnet'),
-    url('^.*$', IndexView.as_view(), name='index'),
+    url(r'^api/v1/auth/login/$', 'authentication.views.def_login_api', name='login'),
+    url(r'^api/v1/auth/logout/$','authentication.views.def_login_api', name='login'),
+    url(r'^api/v1/auth/current-user/$', CurrentUserView.as_view(), name='current'),
+    url('^$', IndexView.as_view(), name='index'),
 )
 
 # urlpatterns = patterns(

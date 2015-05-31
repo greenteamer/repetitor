@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
 
 
 class AccountManager(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
         if not email:
-            raise ValueError('Users must have a valid email address.')
+            raise ValueErroror('Users must have a valid email address.')
 
         if not kwargs.get('username'):
             raise ValueError('Users must have a valid username.')
@@ -32,7 +32,7 @@ class AccountManager(BaseUserManager):
         return account
 
 
-class Account(AbstractBaseUser, PermissionsMixin):
+class Account(AbstractBaseUser):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=40, unique=True)
 
@@ -41,8 +41,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
     tagline = models.CharField(max_length=140, blank=True)
 
     is_admin = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -60,3 +60,13 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.first_name
+
+    def has_perm(self, perm, obj=None):
+        "Does the user have a specific permission?"
+        # Simplest possible answer: Yes, always
+        return True
+
+    def has_module_perms(self, app_label):
+        "Does the user have permissions to view the app `app_label`?"
+        # Simplest possible answer: Yes, always
+        return True
