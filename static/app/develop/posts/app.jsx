@@ -53,20 +53,6 @@ define(['react', 'Navigation', 'AddPost', 'AppActions', 'AppStore', 'cookie', 'b
 
             AppStore.bind( 'change', this.userChanged );
 
-            // $.ajax({
-            //     url: 'api/v1/auth/current-user/',
-            //     cache: false,
-            //     success: (function (data) {
-            //         this.setState({
-            //             user: data
-            //         });
-            //         current_user = this.state.user;
-            //     }).bind(this),
-            //     error: (function (data) {
-            //         console.log(data);
-            //         console.log(this.state.user);
-            //     }).bind(this)
-            // });
             $.ajax({
                 url: '/api/v1/posts/',
                 dataType: 'json',
