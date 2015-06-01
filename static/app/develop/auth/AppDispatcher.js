@@ -1,4 +1,4 @@
-define(['dispatcher'], function (){
+define(['dispatcher',], function (Dispatcher){
 
     var AppDispatcher = new Dispatcher();
 

@@ -1,5 +1,5 @@
 // Input (JSX):
-define(['react', 'Auth', 'AppActions'], function (React, Auth, AppActions) {
+define(['react', 'Auth', 'Registration', 'AppActions'], function (React, Auth, Registration, AppActions) {
 
     var Navigation = React.createClass({
         displayName: 'Navigation',

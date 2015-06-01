@@ -5,39 +5,39 @@ define(['react', 'Navigation', 'AddPost', 'AppActions', 'AppStore', 'cookie', 'b
     var current_user = {};
 
 
-    var Post = React.createClass({
+    var Post = React.createClass({displayName: "Post",
         render: function(){
             return (
-                <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                    <div className="well">
-                        <h3>{this.props.model.author.username}</h3>
-                        <p ref="content">{this.props.children}</p>
-                    </div>
-                </div>
+                React.createElement("div", {className: "col-xs-12 col-sm-6 col-md-4 col-lg-3"}, 
+                    React.createElement("div", {className: "well"}, 
+                        React.createElement("h3", null, this.props.model.author.username), 
+                        React.createElement("p", {ref: "content"}, this.props.children)
+                    )
+                )
             )
         }
     });
 
 
-    var PostList = React.createClass({
+    var PostList = React.createClass({displayName: "PostList",
         render: function () {
             items = this.props.collection.map(function (model, index) {
                 return (
-                    <Post model={model}>
-                        {model.content}
-                    </Post>
+                    React.createElement(Post, {model: model}, 
+                        model.content
+                    )
                 )
             });
             return (
-                <div className="row">
-                    {items}
-                </div>
+                React.createElement("div", {className: "row"}, 
+                    items
+                )
             )
         }
     });
 
 
-    var App = React.createClass({
+    var App = React.createClass({displayName: "App",
         getInitialState: function () {
             return {
                 collection: [],
@@ -49,24 +49,22 @@ define(['react', 'Navigation', 'AddPost', 'AppActions', 'AppStore', 'cookie', 'b
         },
         componentDidMount: function () {
 
-            AppActions.getCurrentUser();
-
             AppStore.bind( 'change', this.userChanged );
 
-            // $.ajax({
-            //     url: 'api/v1/auth/current-user/',
-            //     cache: false,
-            //     success: (function (data) {
-            //         this.setState({
-            //             user: data
-            //         });
-            //         current_user = this.state.user;
-            //     }).bind(this),
-            //     error: (function (data) {
-            //         console.log(data);
-            //         console.log(this.state.user);
-            //     }).bind(this)
-            // });
+            $.ajax({
+                url: 'api/v1/auth/current-user/',
+                cache: false,
+                success: (function (data) {
+                    this.setState({
+                        user: data
+                    });
+                    current_user = this.state.user;
+                }).bind(this),
+                error: (function (data) {
+                    console.log(data);
+                    console.log(this.state.user);
+                }).bind(this)
+            });
             $.ajax({
                 url: '/api/v1/posts/',
                 dataType: 'json',
@@ -123,25 +121,25 @@ define(['react', 'Navigation', 'AddPost', 'AppActions', 'AppStore', 'cookie', 'b
         },
         render: function () {
             return (
-                <div className="app_container">
-                    <Navigation user={this.state.user} />
-                    <div className="container-fluid test-class">
-                        <div className="row">
-                            <div className="col-xs-12, col-md-3">
-                            </div>
-                            <div className="col-xs-12 col-md-9">
-                                <PostList collection={this.state.collection} />
-                            </div>
-                        </div>
-                    </div>
-                    <AddPost addPost={this.addPost} />
-                </div>
+                React.createElement("div", {className: "app_container"}, 
+                    React.createElement(Navigation, {user: this.state.user}), 
+                    React.createElement("div", {className: "container-fluid test-class"}, 
+                        React.createElement("div", {className: "row"}, 
+                            React.createElement("div", {className: "col-xs-12, col-md-3"}
+                            ), 
+                            React.createElement("div", {className: "col-xs-12 col-md-9"}, 
+                                React.createElement(PostList, {collection: this.state.collection})
+                            )
+                        )
+                    ), 
+                    React.createElement(AddPost, {addPost: this.addPost})
+                )
             )
         }
     });
 
 
-    React.render(<App/>, document.getElementById('app'));
+    React.render(React.createElement(App, null), document.getElementById('app'));
 
 
     return App;

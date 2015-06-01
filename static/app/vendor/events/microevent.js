@@ -1,3 +1,4 @@
+define([], function (){
 /**
  * MicroEvent - to make any js object an event emitter (server or browser)
  *
@@ -53,3 +54,7 @@ MicroEvent.mixin	= function(destObject){
 if( typeof module !== "undefined" && ('exports' in module)){
 	module.exports	= MicroEvent;
 }
+
+return MicroEvent;
+
+});

@@ -1,5 +1,4 @@
-// Input (JSX):
-define(['react', 'Auth', 'AppActions'], function (React, Auth, AppActions) {
+define(['react', 'Auth', 'Registration', 'AppActions'], function (React, Auth, Registration, AppActions) {
 
     var Navigation = React.createClass({
         displayName: 'Navigation',
@@ -48,11 +47,12 @@ define(['react', 'Auth', 'AppActions'], function (React, Auth, AppActions) {
                             React.createElement("div", {className: "collapse navbar-collapse", id: "not-google-plus-nav"}, 
                                 React.createElement("ul", {className: "nav navbar-nav pull-right"}, 
                                     React.createElement("li", null, React.createElement("a", {href: "#"}, this.props.user.username)), 
-                                    React.createElement("li", null, React.createElement("a", {href: "/+current_user/settings"}, "Настройки")), 
+                                    React.createElement("li", null, React.createElement("a", {href: "", "data-toggle": "modal", "data-target": "#registration-dialog"}, "Зарегистрироваться")), 
                                     React.createElement("li", null, 
                                         React.createElement("a", {id: "login_button", className: "", href: "", "data-toggle": "modal", "data-target": "#login-dialog"}, "Войти")
                                     ), 
-                                    React.createElement("li", null, React.createElement(Auth, null))
+                                    React.createElement("li", null, React.createElement(Auth, null)), 
+                                    React.createElement("li", null, React.createElement(Registration, null))
                                 )
                             )
                         )

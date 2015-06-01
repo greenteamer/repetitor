@@ -1,16 +1,10 @@
-define(['react', 'cookie', 'bootstrap'], function(React){
+define(['react', 'AppActions', 'bootstrap'], function(React, AppActions){
 
 
     var Auth = React.createClass({displayName: "Auth",
-        getInitialState: function () {
-            return {
-                user: {}
-            }
-        },
         pushFormUser: function (e) {
             e.preventDefault();
-            console.log("событие поймано + пойман user ");
-            this.props.setUserHandler({
+            AppActions.login({
                 email: this.refs.email_ref.getDOMNode().value,
                 pass: this.refs.pass_ref.getDOMNode().value
             });

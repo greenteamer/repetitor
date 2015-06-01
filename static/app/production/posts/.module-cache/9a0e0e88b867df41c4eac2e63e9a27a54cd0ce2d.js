@@ -1,3 +1,4 @@
+// Input (JSX):
 define(['react', 'Navigation', 'AddPost', 'AppActions', 'AppStore', 'cookie', 'bootstrap', 'snackbars'], function(React, Navigation, AddPost, AppActions, AppStore) {
 
     var collection = [];
@@ -48,24 +49,22 @@ define(['react', 'Navigation', 'AddPost', 'AppActions', 'AppStore', 'cookie', 'b
         },
         componentDidMount: function () {
 
-            AppActions.getCurrentUser();
+            AppStore.bind( 'change', this.listChanged );
 
-            AppStore.bind( 'change', this.userChanged );
-
-            // $.ajax({
-            //     url: 'api/v1/auth/current-user/',
-            //     cache: false,
-            //     success: (function (data) {
-            //         this.setState({
-            //             user: data
-            //         });
-            //         current_user = this.state.user;
-            //     }).bind(this),
-            //     error: (function (data) {
-            //         console.log(data);
-            //         console.log(this.state.user);
-            //     }).bind(this)
-            // });
+            $.ajax({
+                url: 'api/v1/auth/current-user/',
+                cache: false,
+                success: (function (data) {
+                    this.setState({
+                        user: data
+                    });
+                    current_user = this.state.user;
+                }).bind(this),
+                error: (function (data) {
+                    console.log(data);
+                    console.log(this.state.user);
+                }).bind(this)
+            });
             $.ajax({
                 url: '/api/v1/posts/',
                 dataType: 'json',
@@ -81,9 +80,9 @@ define(['react', 'Navigation', 'AddPost', 'AppActions', 'AppStore', 'cookie', 'b
             });
         },
         componentWillUnmount: function () {
-            AppStore.unbind( 'change', this.userChanged );
+            AppStore.unbind( 'change', this.listChanged );
         },
-        userChanged: function () {
+        listChanged: function () {
             this.setState({
                 user: AppStore.user
             });
@@ -120,10 +119,61 @@ define(['react', 'Navigation', 'AddPost', 'AppActions', 'AppStore', 'cookie', 'b
                 }).bind(this)
             });
         },
+        loginUser: function (new_user) {
+            // Авторизация на сайте
+            var var_this = this;
+            var csrftoken = $.cookie('csrftoken');
+            $.post(
+                "api/v1/auth/login/",
+                {
+                    csrfmiddlewaretoken: csrftoken,
+                    email: new_user.email,
+                    password: new_user.pass
+                }
+            ).success(
+                function (data) {
+                    var text = "Добро пожаловать на наш сайт, Ваша почта " + data.email;
+                    $.snackbar({timeout: 5000, content: data.message});
+                    if (data.status === 'ok') {
+                        var_this.setState({user: {
+                            username: data.username
+                        }});
+                    }
+                })
+            .error(
+                function (data) {
+                    var text = "Что-то пошло не так, попробуйте позже";
+                    console.log("Ошибка post запроса в авторизации");
+                    console.log(data);
+                    $.snackbar({timeout: 100, content: text});
+                });
+        },
+        logoutUser: function () {
+            // реализация logout
+            var var_this = this;
+            console.log("нажатие отработало");
+            AppActions.logout();
+            // $.ajax({
+            //     url: 'api/v1/auth/logout/',
+            //     dataType: 'json',
+            //     cache: false,
+            //     success: (function (data) {
+            //         $.snackbar({timeout: 5000, content: data.message});
+            //         if (data.status === 'ok') {
+            //             var_this.setState({user: {
+            //                 username: 'Незарегистрированный'
+            //             }});
+            //         }
+            //     }).bind(this),
+            //     error: (function (xhr, status, err) {
+            //         console.log('Что то не так с logOut функцией');
+            //     }).bind(this)
+            // });
+        },
         render: function () {
             return (
                 React.createElement("div", {className: "app_container"}, 
-                    React.createElement(Navigation, {user: this.state.user}), 
+                    React.createElement(Navigation, {user: this.state.user, loginUserHandler: this.loginUser, logoutUserHandler: this.logoutUser}), 
                     React.createElement("div", {className: "container-fluid test-class"}, 
                         React.createElement("div", {className: "row"}, 
                             React.createElement("div", {className: "col-xs-12, col-md-3"}

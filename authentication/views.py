@@ -98,9 +98,9 @@ class AccountViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             Account.objects.create_user(**serializer.validated_data)
 
-            return Response(
-                serializer.validated_data, status=status.HTTP_201_CREATED
-            )
+            return HttpResponse(json.dumps({
+                    'message': u'Вы успешно зарегистрировались, дальнейшие инструкции поступят Вам на электронную почту.',
+                }), content_type="application/json")
 
         return Response({
             'status': 'Bad request',

@@ -1,14 +1,10 @@
-define(['react', 'Auth'], function (React, Auth) {
+// Input (JSX):
+define(['react', 'Auth', 'AppActions'], function (React, Auth, AppActions) {
 
     var Navigation = React.createClass({
         displayName: 'Navigation',
-        setUser: function (user) {
-            console.log("следующие данные с формы переданы в меню");
-            console.log(user);
-            this.props.loginUserHandler(user);
-        },
         logoutUserButtonClick: function () {
-            this.props.logoutUserHandler();
+            AppActions.logout();
         },
         render: function () {
             if (this.props.user.username !== 'Незарегистрированный') {
@@ -56,7 +52,7 @@ define(['react', 'Auth'], function (React, Auth) {
                                     React.createElement("li", null, 
                                         React.createElement("a", {id: "login_button", className: "", href: "", "data-toggle": "modal", "data-target": "#login-dialog"}, "Войти")
                                     ), 
-                                    React.createElement("li", null, React.createElement(Auth, {setUserHandler: this.setUser}))
+                                    React.createElement("li", null, React.createElement(Auth, null))
                                 )
                             )
                         )

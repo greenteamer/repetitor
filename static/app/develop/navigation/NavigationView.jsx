@@ -1,15 +1,10 @@
 // Input (JSX):
-define(['react', 'Auth'], function (React, Auth) {
+define(['react', 'Auth', 'Registration', 'AppActions'], function (React, Auth, Registration, AppActions) {
 
     var Navigation = React.createClass({
         displayName: 'Navigation',
-        setUser: function (user) {
-            console.log("следующие данные с формы переданы в меню");
-            console.log(user);
-            this.props.loginUserHandler(user);
-        },
         logoutUserButtonClick: function () {
-            this.props.logoutUserHandler();
+            AppActions.logout();
         },
         render: function () {
             if (this.props.user.username !== 'Незарегистрированный') {
@@ -53,11 +48,12 @@ define(['react', 'Auth'], function (React, Auth) {
                             <div className="collapse navbar-collapse" id="not-google-plus-nav">
                                 <ul className="nav navbar-nav pull-right">
                                     <li><a href="#">{this.props.user.username}</a></li>
-                                    <li><a href="/+current_user/settings">Настройки</a></li>
+                                    <li><a href="" data-toggle="modal" data-target="#registration-dialog">Зарегистрироваться</a></li>
                                     <li>
                                         <a id="login_button" className="" href="" data-toggle="modal" data-target="#login-dialog">Войти</a>
                                     </li>
-                                    <li><Auth setUserHandler={this.setUser}/></li>
+                                    <li><Auth/></li>
+                                    <li><Registration/></li>
                                 </ul>
                             </div>
                         </div>
