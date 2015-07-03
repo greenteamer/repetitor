@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {# <div class="container">#}
+        <div class="row">
+            <div class="col-md-12">
+
+                <h1>Привет, {{ request.user }} это главная</h1>
+                {{request.user.get_profile}}
+
+                <h3>Преподаватели:</h3>
+                <div class="list-group">
+                    {% for teacher in teachers %}
+                        <div class="list-group-item">
+                            <div class="row-picture">
+                                <img class="circle" src="{{ teacher.get_image_url }}" alt="icon">
+                            </div>
+                            <div class="row-content">
+                                <div class="col-md-6">
+                                    <h4 class="list-group-item-heading">{{ teacher.account.get_full_name }}</h4>
+                                    <p class="list-group-item-text">Предмет: {{ teacher.subject }}</p>
+                                    <p class="list-group-item-text">Стаж: {{ teacher.skill }}</p>
+                                    {# <p class="list-group-item-text">Телефон: {{ teacher.account.phone }}</p>#}
+                                </div>
+                                {% if request.user.is_student %}
+                                    <div class="col-md-6">
+                                        <form class="pull-left" action="" method="post">{% csrf_token %}
+                                            <input type="hidden" name="id" value="{{teacher.id}}">
+                                            <input class="btn btn-primary" type="submit" name="order" value="Заказать">
+                                        </form>
+                                        <a href="#" class="btn btn-success">Задать вопрос</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="list-group-separator"></div>
+                    {% endfor %}
+                </div>
+
+                {% if request.user.get_profile.is_teacher %}
+                    <h3>Учащиеся:</h3>
+                    <div class="list-group">
+                        {% for student in students %}
+                            <div class="list-group-item">
+                                <div class="row-picture">
+                                    <img class="circle" src="{{ student.get_image_url }}" alt="icon">
+                                </div>
+                                <div class="row-content">
+                                    <h4 class="list-group-item-heading">{{ student.account.get_full_name }}</h4>
+                                    <p class="list-group-item-text">Возраст: {{ student.age }}</p>
+                                    {# <p class="list-group-item-text">Телефон: {{ student.account.phone }}</p>#}
+                                </div>
+                            </div>
+                            <div class="list-group-separator"></div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    {# </div>#}
+{% endblock %}

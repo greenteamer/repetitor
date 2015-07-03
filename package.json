@@ -1,26 +1,33 @@
 {
-  "name": "thinkster_django_angular_boilerplate",
+  "name": "Repetitor-tomsk-project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "chmod +x ./scripts/postInstall.sh && ./scripts/postInstall.sh"
+  "author": "Aleksandr Korovkin",
+  "homepage": "http://repetitor70.ru",
+  "browserify": {
+    "transform": [
+      [
+        "reactify",
+        {
+          "es6": false
+        }
+      ]
+    ]
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/brwr/thinkster-django-angular-boilerplate.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/brwr/thinkster-django-angular-boilerplate/issues"
-  },
-  "homepage": "https://github.com/brwr/thinkster-django-angular-boilerplate",
   "dependencies": {
-    "bower": "^1.3.12",
-    "gulp": "^3.8.9",
-    "gulp-ng-annotate": "^0.3.3",
-    "gulp-uglify": "^1.0.1"
+    "flux": "^2.0.3",
+    "js-cookie": "^1.5.1",
+    "merge": "^1.2.0",
+    "microevent": "^1.0.0",
+    "react": "latest",
+    "react-notification": "^1.3.0"
+  },
+  "devDependencies": {
+    "browserify": "latest"
+  },
+  "scripts": {
+    "prod": "jsx -x jsx ./static/brow/dev ./static/brow/dist",
+    "build-js": "browserify ./static/brow/main.js > ./static/brow/brow.js",
+    "watch-js": "watchify ./static/brow/main.js -o ./static/brow/brow.js -v -d"
   }
 }

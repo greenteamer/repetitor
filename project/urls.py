@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, url, include
-from thinkster_django_angular_boilerplate.views import IndexView
 from rest_framework_nested import routers
 from authentication.views import AccountViewSet, UserViewSet, CurrentUserView
 from authentication.views import def_login_api
 from posts.views import PostViewSet, AccountPostsViewSet
 from django.contrib import admin
+from django.conf import settings
 admin.autodiscover()
 
 router = routers.SimpleRouter()
@@ -25,8 +25,18 @@ urlpatterns = patterns('',
     url(r'^api/v1/auth/login/$', 'authentication.views.def_login_api', name='login'),
     url(r'^api/v1/auth/logout/$','authentication.views.def_login_api', name='login'),
     url(r'^api/v1/auth/current-user/$', CurrentUserView.as_view(), name='current'),
-    url('^$', IndexView.as_view(), name='index'),
+
+    url(r'^', include('authentication.urls')),
+    url(r'^', include('core.urls')),
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.STATIC_ROOT}),
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.MEDIA_ROOT}),
+        )
 
 # urlpatterns = patterns(
 #     '',

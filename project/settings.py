@@ -39,6 +39,9 @@ INSTALLED_APPS = (
     'compressor',
     'authentication',
     'posts',
+    'core',
+    'relationships',
+    'robokassa',
 )
 
 AUTH_USER_MODEL = 'authentication.Account'
@@ -53,9 +56,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'thinkster_django_angular_boilerplate.urls'
+ROOT_URLCONF = 'project.urls'
 
-WSGI_APPLICATION = 'thinkster_django_angular_boilerplate.wsgi.application'
+WSGI_APPLICATION = 'project.wsgi.application'
 
 
 # import dj_database_url
@@ -101,6 +104,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+MEDIA_ROOT = '%s/project/media' % BASE_DIR
+MEDIA_URL = '/media/'
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -127,6 +133,11 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
+
+ROBOKASSA_LOGIN = 'repetitor_tomsk'
+ROBOKASSA_PASSWORD1 = 'LKJHsdIvl3kvbsklas234fe2ye2sdfg93'
+ROBOKASSA_PASSWORD2 = 'dIvl3kv984Kfsk3o234fe2y'
+ROBOKASSA_TEST_MODE = True
 
 try:
     from settings_local import *

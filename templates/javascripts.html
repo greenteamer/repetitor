@@ -3,66 +3,13 @@
 
 {% compress js %}
 
-{# work with repetitor#}
-<script data-main="{% static 'app/main.js' %}" src="{% static 'app/vendor/requirejs/require.js' %}"></script>
+    {# working app #}
+    {# <script src="{% static 'brow/brow.js' %}"></script>#}
 
-{# try requirejs #}
-{# <script data-main="{% static 'app/scripts/main.js' %}" src="{% static 'app/scripts/vendor/requirejs/require.js' %}"></script>#}
+    {# <script type="text/javascript" src="{% static 'application/require.js' %}"></script> #}
+    <script type="text/javascript" src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bower_components/bootstrap-material-design/dist/js/material.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bower_components/bootstrap-material-design/dist/js/ripples.js' %}"></script>
 
-{# try browserify #}
-{# <script src="{% static 'browserify/browserify.js' %}"></script> #}
-
-{# <script type="text/javascript" src="{% static 'application/require.js' %}"></script> #}
-{# <script type="text/javascript" src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script> #}
-{# <script type="text/javascript" src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script> #}
-{# <script type="text/javascript" src="{% static 'bower_components/bootstrap-material-design/dist/js/material.js' %}"></script> #}
-{# <script type="text/javascript" src="{% static 'bower_components/bootstrap-material-design/dist/js/ripples.js' %}"></script> #}
-<!-- for backbone  and marionette -->
-{# <script type="text/javascript" src="{% static 'bower_components/underscore/underscore.js' %}"></script> #}
-{# <script type="text/javascript" src="{% static 'bower_components/backbone/backbone.js' %}"></script> #}
-{# <script type="text/javascript" src="{% static 'bower_components/marionette/lib/backbone.marionette.min.js' %}"></script> #}
-<!-- for backbone-forms -->
-{# <script type="text/javascript" src="{% static 'bower_components/backbone-forms/distribution/backbone-forms.min.js' %}"></script> #}
-{# <script type="text/javascript" src="{% static 'bower_components/backbone-forms/distribution/editors/list.min.js' %}"></script> #}
-
-
-<!--
-<script type="text/template" id="template">
-	 <form class="bs-component" enctype="multipart/form-data">
-	 	<div class="form-group">
-	 		<div class="form-control-wrapper">
-	     		<div class="form-control empty" id="focusedInput" data-fields="email"></div>
-	     	</div>
-     	</div>
-     	<div class="form-group">
-	     	<div class="form-control-wrapper">
-	     		<div data-fields="password"></div>
-	     	</div>
-		</div>
-	 </form>
- </script>
- -->
-
-
-<!-- My Backbone application-->
-{#<script type="text/javascript" src="{% static 'javascripts/my_backbone/auth.js' %}"></script>#}
-{#<script type="text/javascript" src="{% static 'javascripts/my_backbone/app.js' %}"></script>#}
-
-
-
-<!-- for react -->
-{# <script type="text/javascript" src="{% static 'bower_components/react/react.js' %}"></script> #}
-{# <script type="text/javascript" src="{% static 'bower_components/react/JSXTransformer.js' %}"></script> #}
-{# <script src="{% static 'bower_components/react-bootstrap/react-bootstrap.min.js' %}"></script> #}
-{#<script>var Alert = ReactBootstrap.Alert;</script>#}
-{# <script type="text/jsx" src="{% static 'bower_components/react/marked.min.js' %}"></script> #}
-{# <script type="text/jsx" src="{% static 'bower_components/backbone-react-component/lib/component.js' %}"></script> #}
-{# <script type="text/jsx" src="{% static 'bower_components/backbone-react-component/lib/jquery.cookie.js' %}"></script> #}
-{# <script type="text/jsx" src="{% static 'application/main.js' %}"></script> #}
-{# <script type="text/jsx" src="{% static 'application/app.js' %}"></script> #}
-{# <script type="text/jsx" src="{% static 'application/navigation.js' %}"></script> #}
-{# <script type="text/jsx" src="{% static 'application/sidebar.js' %}"></script> #}
-{#<!--<script type="text/javascript" src="{% static 'application/auth.js' %}"></script>-->#}
-
-{#<script type="text/javascript" src="{% static 'application/marionette.js' %}"></script>#}
 {% endcompress %}

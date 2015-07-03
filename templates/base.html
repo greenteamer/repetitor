@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ваш репетитор</title>
+  {% include 'stylesheets.html' %}
+
+</head>
+    <body>
+        {# для реакт приложения#}
+        {# <div id="app"></div>#}
+        <section id="menu">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        {% block header %}
+                            {% include "menu.html" %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="content-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <section id="sidebar">
+                            {% block sidebar %}
+                                {% include "sidebar.html" %}
+                            {% endblock %}
+                        </section>
+                    </div>
+                    <div class="col-md-9">
+                        <section id="content">
+                            {% block content %}
+                            {% endblock %}
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        {% block footer %}
+                            {% include "footer.html" %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        {% include 'modal.html' %}
+        {% include 'javascripts.html' %}
+    </body>
+</html>
