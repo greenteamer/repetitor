@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        {% for article in articles %}
+            <div class="col-xs-12">
+                <h2>{{article.title}}</h2>
+                <p>
+                    {{article.text|safe}}
+                </p>
+                <a href="{{article.get_absolute_url}}">подробнее</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

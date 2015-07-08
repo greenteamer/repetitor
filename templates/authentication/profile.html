@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+
+{% block page_js %}
+    <script type="text/javascript" src="{% static 'kastoreum/js/form_validate.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+            <p>{{ message }}</p>
+                {% if request.user.is_authenticated %}
+                    <div class="pure_form">
+                        <h3>Заполните Ваш профиль</h3>
+                        <form action="" method="post" enctype="multipart/form-data" id="form_cart">{% csrf_token %}
+                            <br/>
+                            {{ form.as_p }}
+                            <input type="submit" name="checkout" class="btn btn-primary" value="Сохранить" />
+                        </form>
+                    </div>
+                {% else %}
+                    <p>
+                        Что бы создать или изменить профиль необходимо авторизироваться на сайте
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

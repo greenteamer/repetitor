@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+
+{% block page_js %}
+    <script type="text/javascript" src="{% static 'kastoreum/js/form_validate.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="col-md-12">
+    <p>{{ message }}</p>
+    <div class="">
+        <h1>Ваш аккаунт, репетитор - {{ request.user.email }}</h1>
+        <h3>Ваши текущие репетиторства</h3>
+        <div class="list-group">
+            {% for order in orders %}
+                <div class="list-group-item">
+                    <div class="row-picture">
+                        <img class="circle" src="{{ order.student.get_image_url }}" alt="icon">
+                    </div>
+                    <div class="row-content">
+                        <div class="col-md-6">
+                            <h4 class="list-group-item-heading">{{ order.student.account.get_full_name }}</h4>
+                            <p class="list-group-item-text">Возраст: {{ order.student.age }}</p>
+                            <p class="list-group-item-text">Телефон: {{ order.student.account.phone }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <form action="{{ order.form.target }}" method="POST">
+                                <p>{{ order.form.as_p }}</p>
+                                <input type="submit" class="btn btn-warning" value="Оплатить">
+                            </form>
+                            <a href="" class="btn btn-primary">Оставить сообщение пользователю</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-group-separator"></div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

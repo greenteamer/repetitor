@@ -1,0 +1,52 @@
+.no-posts-here {
+  text-align: center;
+}
+
+.post {}
+
+.post .post__meta {
+  font-weight: bold;
+  text-align: right;
+  padding-bottom: 19px;
+}
+
+.post .post__meta a:hover {
+  text-decoration: none;
+}
+
+.btn-add-new-post {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.popover, .tooltip-inner {
+  
+  background-color: #f7f7f7;
+  color: #000;
+  border-radius: 2px;
+}
+
+.popover-title {
+  padding: 8px 14px;
+  margin: 0;
+  font-size: 14px;
+  color: #fff;
+  background: #4285f4;
+  border-bottom: 1px solid #ebebeb;
+  border-radius: 0px 0px 0 0; 
+}
+
+.popover.right>.arrow {
+  top: 50%;
+  left: -11px;
+  margin-top: -11px;
+  border-right-color: rgba(0,0,0,.2);
+  border-right-color: rgba(0,0,0,.2);
+  border-left-width: 0;
+}
+
+.popover.right .arrow:after, .popover.right .tooltip-arrow, .tooltip.right .arrow:after, .tooltip.right .tooltip-arrow,
+.popover.left .arrow:after, .popover.left .tooltip-arrow, .tooltip.left .arrow:after, .tooltip.left .tooltip-arrow {
+  border-left-color: #f7f7f7;
+}

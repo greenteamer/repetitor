@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+
+{% block page_js %}
+    <script type="text/javascript" src="{% static 'kastoreum/js/form_validate.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+            <p>{{ message }}</p>
+                <div class="pure_form">
+                    <h1>Регистрация на сайте</h1>
+                    <form action="" method="post" enctype="multipart/form-data" id="form_cart">{% csrf_token %}
+                        {% if not user.is_authenticated %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3>Основные данные</h3>
+                                    {{ form.as_p }}
+                                </div>
+                                <div class="col-md-6">
+                                    <h3>Дополнительные данные</h3>
+                                    {{ profile_form.as_p }}
+                                </div>
+                            </div>
+
+                        {% endif %}
+                        <input type="submit" name="checkout" class="btn btn-primary" value="Зарегистрироваться" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

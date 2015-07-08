@@ -1,17 +1,40 @@
-# Python compiled byte code
+# OS
+.DS_Store
+
+# Python
 *.pyc
+*.pyo
 
-# SQLite3 database
-*.sqlite3
+# Common IDEs
+*.swp
+.idea/
+.buildpath
+.project
+.settings
+atlassian-ide-plugin.xml
 
-# Node modules
+# Project
+settings_local.py
+logs/
+pids/
+save_2gis_data.py
+get_2gis_data.py
+get_2gis_filials.py
+media/
+
+
+#Marionette
+*.swp
+*.swo
+*.orig
+tmp/
+ext/
 node_modules/
-
-# Bower components
-static/bower_components/
-
-# Uglified JavaScript
-dist/
-
-# Staticfiles
-staticfiles/
+coverage/
+.grunt/
+npm-debug.log
+bower_components/
+.grunt
+reports
+jsdoc
+test/src/

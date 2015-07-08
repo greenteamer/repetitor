@@ -2,13 +2,18 @@
 {% load staticfiles %}
 
 {% compress css %}
-<link rel="stylesheet" type="text/css" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'bower_components/bootstrap-material-design/dist/css/material.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'bower_components/bootstrap-material-design/dist/css/ripples.min.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'bower_components/ngDialog/css/ngDialog.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'bower_components/ngDialog/css/ngDialog-theme-default.css' %}" />
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500&subset=latin,cyrillic-ext,cyrillic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-<link rel="stylesheet" type="text/css" href="{% static 'lib/snackbarjs/snackbar.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'bower_components/bootstrap-material-design/dist/css/material.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'bower_components/bootstrap-material-design/dist/css/ripples.min.css' %}" />
+{# <link rel="stylesheet" type="text/css" href="{% static 'bower_components/ngDialog/css/ngDialog.min.css' %}" />#}
+{# <link rel="stylesheet" type="text/css" href="{% static 'bower_components/ngDialog/css/ngDialog-theme-default.css' %}" />#}
+
+ <link rel="stylesheet" type="text/css" href="{% static 'lib/snackbarjs/snackbar.min.css' %}" />
+{# <link rel="stylesheet" type="text/css" href="{% static 'app/vendor/snackbarjs/dist/snackbar.min.css' %}" /> #}
+{# <link rel="stylesheet" type="text/css" href="{% static 'app/vendor/snackbarjs/themes-css/material.css' %}" />#}
 
 <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/styles.css' %}" />
 {% endcompress %}
