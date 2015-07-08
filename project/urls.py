@@ -28,6 +28,8 @@ urlpatterns = patterns('',
 
     url(r'^', include('authentication.urls')),
     url(r'^', include('core.urls')),
+
+    url("", include('django_socketio.urls')),
 )
 
 if settings.DEBUG:

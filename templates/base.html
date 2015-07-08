@@ -1,3 +1,4 @@
+{% load socketio_tags %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,5 +57,11 @@
 
         {% include 'modal.html' %}
         {% include 'javascripts.html' %}
+        {% socketio %}    
+        <script>
+            var socket = new io.Socket();
+            socket.connect();
+            // etc
+        </script>
     </body>
 </html>

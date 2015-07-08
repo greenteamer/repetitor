@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'core',
     'relationships',
     'robokassa',
+    'django_socketio',
 )
 
 AUTH_USER_MODEL = 'authentication.Account'
@@ -138,6 +139,9 @@ ROBOKASSA_LOGIN = 'repetitor_tomsk'
 ROBOKASSA_PASSWORD1 = 'LKJHsdIvl3kvbsklas234fe2ye2sdfg93'
 ROBOKASSA_PASSWORD2 = 'dIvl3kv984Kfsk3o234fe2y'
 ROBOKASSA_TEST_MODE = True
+
+SOCKETIO_HOST = 'repetitor.django.forward70.ru'
+SOCKETIO_PORT = '9000'
 
 try:
     from settings_local import *

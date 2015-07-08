@@ -259,6 +259,13 @@ class StudentAccountView(TemplateView):
         return render_to_response(self.template_name, locals(), context_instance=RequestContext(request))
 
 
+class AdminAccountView(TemplateView):
+    template_name = 'authentication/admin_account.html'
+    def get(self, request):
+        orders = Order.objects.all()
+        return render_to_response(self.template_name, locals(), context_instance=RequestContext(request))
+
+
 def payment_received(sender, **kwargs):
     """обрабатываем сигнал оплаты от платежной системы"""
     order = Order.objects.get(id=kwargs['InvId'])

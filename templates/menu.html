@@ -34,9 +34,11 @@
         <ul class="dropdown-menu">
             {% if request.user.is_authenticated %}
                 {% if request.user.is_teacher %}
-                    <li><a href="/teacher-account/">Мой аккаунт</a></li>
+                    <li><a href="/teacher-account/">Мой кабинет</a></li>
                 {% elif request.user.is_student %}
-                    <li><a href="/student-account/">Мой аккаунт</a></li>
+                    <li><a href="/student-account/">Мой кабинет</a></li>
+                {% elif request.user.is_admin %}
+                    <li><a href="/admin-account/">Кабинет администратора</a></li>
                 {% endif %}
                 <li><a href="/profile/">Изменить мои данные</a></li>
                 <li class="divider"></li>
