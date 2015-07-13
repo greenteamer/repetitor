@@ -99,20 +99,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = 'staticfiles'
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATIC_ROOT = '%s/project/static' % BASE_DIR
+STATIC_ROOT = ''
 
 MEDIA_ROOT = '%s/project/media' % BASE_DIR
+
 MEDIA_URL = '/media/'
 
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
-)
+# STATICFILES_FINDERS = (
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#     'compressor.finders.CompressorFinder',
+# )
 
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 
