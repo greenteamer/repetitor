@@ -1,37 +1,42 @@
-{% load socketio_tags %}
+{# {% load socketio_tags %}#}
 <!DOCTYPE html>
 <html>
 <head>
   <title>Ваш репетитор</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   {% include 'stylesheets.html' %}
-
 </head>
     <body>
         {# для реакт приложения#}
         {# <div id="app"></div>#}
-        <section id="menu">
+        <nav>
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12">
-                        {% block header %}
-                            {% include "menu.html" %}
-                        {% endblock %}
+                    <div class="col s12">
+                        <div class="nav-wrapper">
+                            <a href="/" class="left">Репетитор</a>
+                            <a href="#" data-activates="mobile-demo" class="right button-collapse"><i class="material-icons">menu</i></a>
+                            {% block header %}
+                                {% include "menu.html" %}
+                            {% endblock %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </nav>
+
 
         <div id="content-wrapper">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col s3">
                         <section id="sidebar">
                             {% block sidebar %}
                                 {% include "sidebar.html" %}
                             {% endblock %}
                         </section>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col s9">
                         <section id="content">
                             {% block content %}
                             {% endblock %}
@@ -41,27 +46,51 @@
             </div>
         </div>
 
-        <section id="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        {% block footer %}
-                            {% include "footer.html" %}
-                        {% endblock %}
-                    </div>
-                </div>
+        <footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Footer Content</h5>
+                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+              </div>
             </div>
-        </section>
-
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2014 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+        </footer>
 
 
         {% include 'modal.html' %}
         {% include 'javascripts.html' %}
-        {% socketio %}    
+        {% block page_js %}
+        {% endblock %}
+        {# {% socketio %}#}
         <script>
-            var socket = new io.Socket();
-            socket.connect();
-            // etc
+            $( document ).ready(function(){
+                $('.dropdown-button').dropdown({
+                  inDuration: 300,
+                  outDuration: 225,
+                  constrain_width: false, // Does not change width of dropdown to that of the activator
+                  hover: true, // Activate on hover
+                  gutter: 0, // Spacing from edge
+                  belowOrigin: true // Displays dropdown below the button
+                }
+                );
+                $(".button-collapse").sideNav();
+            });
         </script>
     </body>
 </html>

@@ -42,7 +42,8 @@ INSTALLED_APPS = (
     'core',
     'relationships',
     'robokassa',
-    'django_socketio',
+    'ceiling',
+    # 'django_socketio',
 )
 
 AUTH_USER_MODEL = 'authentication.Account'
@@ -103,15 +104,15 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = '%s/project/static' % BASE_DIR
 STATIC_ROOT = ''
 
-MEDIA_ROOT = '%s/project/media' % BASE_DIR
+MEDIA_ROOT = '%s/media' % BASE_DIR
 
 MEDIA_URL = '/media/'
 
-# STATICFILES_FINDERS = (
-#     'django.contrib.staticfiles.finders.FileSystemFinder',
-#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#     'compressor.finders.CompressorFinder',
-# )
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
 
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 
@@ -139,8 +140,8 @@ ROBOKASSA_PASSWORD1 = 'LKJHsdIvl3kvbsklas234fe2ye2sdfg93'
 ROBOKASSA_PASSWORD2 = 'dIvl3kv984Kfsk3o234fe2y'
 ROBOKASSA_TEST_MODE = True
 
-SOCKETIO_HOST = 'repetitor.django.forward70.ru'
-SOCKETIO_PORT = '9000'
+# SOCKETIO_HOST = 'repetitor.django.forward70.ru'
+# SOCKETIO_PORT = '9000'
 
 try:
     from settings_local import *

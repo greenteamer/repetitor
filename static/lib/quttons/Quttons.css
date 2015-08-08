@@ -1,0 +1,45 @@
+
+* {
+  margin : 0;
+  padding : 0;
+}
+
+.qutton {
+    box-sizing : content-box !important;
+    background-repeat : no-repeat !important;
+    background-position: center center !important;
+    cursor : auto;
+    transition: background-color .2s ease,box-shadow .28s cubic-bezier(.4,0,.2,1);
+}
+.qutton:hover {
+    box-shadow: 0 1px 6px 0 rgba(0,0,0,.12),0 1px 6px 0 rgba(0,0,0,.12);
+}
+
+.qutton.close {
+  position : absolute !important;
+  cursor : pointer;
+}
+
+#qutton_comment {
+    background-image: url(./icon_comment.png);
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    background-color: rgb(65, 170, 241);
+    border-top-left-radius: 60px;
+    border-top-right-radius: 60px;
+    border-bottom-right-radius: 60px;
+    border-bottom-left-radius: 60px;
+}
+
+#commentDialog {
+    width: 380px;
+    height: 350px;
+    border-radius: 4px;
+    padding: 15px;
+    background-color: #fff;
+}
+
+.list-group .list-group-item {
+    overflow: inherit;
+}

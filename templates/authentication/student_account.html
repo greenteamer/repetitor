@@ -4,36 +4,139 @@
 
 {% block page_js %}
     <script type="text/javascript" src="{% static 'kastoreum/js/form_validate.js' %}"></script>
+    <script type="text/javascript">
+        $(".select").dropdown({ "autoinit" : ".select" });
+    </script>
 {% endblock %}
 
+{% block sidebar %}
+    <h3>Активные объявления:</h3>
+    <div class="">
+        {% for announcement in announcements %}
+            <div class="well">
+                <h4>{{ announcement.subject.title }} - {{announcement.id}}</h4>
+                <p>{{ announcement.text }}</p>
+                <form class="" action="" method="post">{% csrf_token %}
+                    <input type="hidden" name="announcement_id" value="{{ announcement.id }}">
+                    {% if announcement.status == 'is_canseled' %}
+                        <input type="submit" class="btn btn-primary btn-flat" name="announcement_status_on" value="Активировать">
+                    {% else %}
+                        <input type="submit" class="btn btn-default btn-flat" name="announcement_status_off" value="Выключить">
+                    {% endif %}
+                </form>
+                {# <p> {% if announcement.status == 'is_active' %}Активное объявление{% else %}Объявление не активно{% endif %}</p>#}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
 
 {% block content %}
 
 <div class="col-md-12">
-    <p>{{ message }}</p>
     <div class="">
         <h1>Ваш аккаунт, ученик {{ request.user.email }}</h1>
-        <h3>Ваши репетиторы</h3>
-        <div class="list-group">
-            {% for order in orders %}
-                <div class="list-group-item">
-                    <div class="row-picture">
-                        <img class="circle" src="{{ order.student.get_image_url }}" alt="icon">
-                    </div>
-                    <div class="row-content">
-                        <div class="col-md-6">
-                            <h4 class="list-group-item-heading">{{ order.teacher.account.get_full_name }}</h4>
-                            <p class="list-group-item-text">Возраст: {{ order.teacher.age }}</p>
-                            <p class="list-group-item-text">Телефон: {{ order.teacher.account.phone }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <a href="" class="btn btn-primary">Оставить сообщение репетитору</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="list-group-separator"></div>
-            {% endfor %}
+
+        {% if message %}
+            <div class="alert alert-dismissable alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>Хорошо!</strong> {{ message }}.
+            </div>
+        {% endif %}
+
+        <div class="announcement well">
+            <h3>Добавить новое объявление для репетиторов</h3>
+            <form class="" action="." method="post">{% csrf_token %}
+                <h4>Выберите предмет</h4>
+                <select name="subject" class="select" placeholder="Выбор предмета">
+                    {% for subject in subjects %}
+                        <option value="{{ subject.id }}">{{ subject.title }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <h4>Комментарий к объявлению</h4>
+                <textarea name="text" class="form-control floating-label" rows="4" placeholder="textarea floating label"></textarea>
+                <br>
+                <h4>Выберите статус объявления</h4>
+                <select name="status" class="select" placeholder="выбор статуса объявления">
+                     <option value="is_canseled" selected>Объявление выключено</option>
+                     <option value="is_active" >Объявление активно</option>
+                </select>
+                <br>
+                <input class="btn btn-success" type="submit" name="annoucement" value="Создать объявление">
+            </form>
         </div>
+
+        {% if orders %}
+            <h3>Репетиторы которым Вы отправили запрос</h3>
+            <div class="list-group">
+                {% for order in orders %}
+                    <div class="list-group-item">
+                        <div class="row-picture">
+                            <img class="circle" src="{{ order.teacher.get_image_url }}" alt="icon">
+                        </div>
+                        <div class="row-content">
+                            <div class="col-md-6">
+                                <!-- Выводим данные пользователя кроме телефона -->
+                                <h4 class="list-group-item-heading">{{ order.teacher.account.get_full_name }}</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <!-- Показываем статус заказа, который выставил репетитор -->
+                                <p>
+                                    <b>статус:</b>
+                                    {% if order.status == '' %}
+                                        Репетитор еще не видел вашего заказа, если в течении 2-х дней он Вам не перезвонит, заказ будет отменен. Вы также можете сделать заказ несколькм репетиторам.
+                                    {% elif order.status == 'is_active' %}
+                                        Репетитор принял заказ, в ближайшее время он должен Вам позвонить.
+                                    {% elif order.status == 'is_canseled' %}
+                                        Репетитор отклонил Ваш заказ, возможно этот репетитор уже занят, попробуйте выбрать другого репетитора.
+                                    {% elif order.status == 'is_fail' %}
+                                        Отношения прерваны по инициативе репетитора
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-separator"></div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if offers %}
+            <h3>Репетиторы ожидающие вашего ответа</h3>
+            <div class="list-group">
+                {% for offer in offers %}                    
+                    {% if not offer.is_mutate %}
+                        <div class="list-group-item">
+                            <div class="row-picture">
+                                <img class="circle" src="{{ offer.teacher.get_image_url }}" alt="icon">
+                            </div>
+                            <div class="row-content">
+                                <div class="col-md-12">
+                                    <h4 class="list-group-item-heading">{{ offer.teacher.account.get_full_name }}</h4>
+                                    <p>{{ offer.teacher.subject }}</p>
+                                    <p>стоимость 45 минут - {{ offer.teacher.price }} р.</p>
+                                    <div class="separator"></div>
+                                    <h4>{{ offer.advt.subject.title }} - {{ offer.advt.id }}</h4>
+                                    <p>{{ offer.advt.text }}</p>
+                                    <!-- Выводим данные пользователя кроме телефона -->
+                                </div>
+                                <div class="col-md-12">
+                                    <!-- Форма согламия или отказа от сотрудничества с репетитором -->
+                                    <form class="pull-left" action="" method="post">{% csrf_token %}
+                                        <input type="hidden" name="id" value="{{ offer.teacher.id}}">
+                                        <input type="hidden" name="offer_id" value="{{ offer.id}}">
+                                        <input type="hidden" name="announcement_id" value="{{ offer.advt.id }}">
+                                        <input class="btn btn-primary" type="submit" name="offer_to_order" value="Согласиться">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-separator"></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
     </div>
 </div>
 {% endblock %}
