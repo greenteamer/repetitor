@@ -13,6 +13,11 @@
 {% block content %}
     {# <div class="container">#}
 
+        <form class="" action="/ceiling/" method="post">{% csrf_token %}
+            <input type="text" name="name" value="">
+            <button type="submit" name="button">submit</button>
+        </form>
+
         <div class="row">
             <div class="col s12">
 

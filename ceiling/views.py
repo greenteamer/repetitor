@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, RequestContext
 from django.views.generic.base import TemplateView
 from PIL import Image, ImageDraw
-
+import urllib
 
 
 class CeilingView(TemplateView):
@@ -26,4 +26,8 @@ class CeilingView(TemplateView):
         # return render_to_response(self.template_name, locals(), context_instance=RequestContext(request))
 
     def post(self, request, **kwargs):
+        text = urllib.urlencode(request.POST)
+        file_ = open('test.txt', 'w')
+        file_.write(text)
+        file_.close()
         return render_to_response(self.template_name, locals(), context_instance=RequestContext(request))
