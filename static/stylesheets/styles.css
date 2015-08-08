@@ -1,5 +1,16 @@
+h1 {font-size: 3.2rem;}
+h2 {font-size: 2.56rem;}
+h3 {font-size: 1.92rem;}
+h4 {font-size: 1.68rem;}
+h5 {font-size: 1.24rem;}
+h6 {font-size: 1rem;}
+
+.margin-6-3 {
+    margin: 6px 3px!important;
+}
+
 .no-posts-here {
-  text-align: center;
+    text-align: center;
 }
 
 .post {}
@@ -21,7 +32,7 @@
 }
 
 .popover, .tooltip-inner {
-  
+
   background-color: #f7f7f7;
   color: #000;
   border-radius: 2px;
@@ -34,7 +45,7 @@
   color: #fff;
   background: #4285f4;
   border-bottom: 1px solid #ebebeb;
-  border-radius: 0px 0px 0 0; 
+  border-radius: 0px 0px 0 0;
 }
 
 .popover.right>.arrow {
@@ -49,4 +60,28 @@
 .popover.right .arrow:after, .popover.right .tooltip-arrow, .tooltip.right .arrow:after, .tooltip.right .tooltip-arrow,
 .popover.left .arrow:after, .popover.left .tooltip-arrow, .tooltip.left .arrow:after, .tooltip.left .tooltip-arrow {
   border-left-color: #f7f7f7;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.btn-round {
+    cursor: pointer;
+    width: 55px;
+    height: 55px;
+    border-radius: 55px;
+}
+.dropdownjs {
+  width: 255px;
+}
+/*#dropdown-menu .sample {
+    width: 200px;
+}
+#dropdown-menu .form-group {
+    margin: 30px 0;
+}*/
+
+.separator {
+      border-bottom: 1px solid rgba(0,0,0,.1);
 }

@@ -1,56 +1,41 @@
-<div class="navbar navbar-material-light-blue-300">
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-material-light-blue-collapse">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-    <a class="navbar-brand" href="/">Репетитор</a>
-  </div>
-  <div class="navbar-collapse collapse navbar-material-light-blue-collapse">
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="/pages/">Страницы</a></li>
-      <li><a href="/articles/">Статьи</a></li>
-      <li class="dropdown">
-        <a href="index.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="javascript:void(0)">Action</a></li>
-          <li><a href="javascript:void(0)">Another action</a></li>
-          <li><a href="javascript:void(0)">Something else here</a></li>
-          <li class="divider"></li>
-          <li class="dropdown-header">Dropdown header</li>
-          <li><a href="javascript:void(0)">Separated link</a></li>
-          <li><a href="javascript:void(0)">One more separated link</a></li>
-        </ul>
-      </li>
-    </ul>
-    <form class="navbar-form navbar-left">
-      <input type="text" class="form-control col-lg-8" placeholder="Search">
-    </form>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a name="">{{ request.user.email }} - id: {{ request.user.id }} - profile_id: {{ request.user.get_profile.id }}</a></li>
-      <li class="dropdown">
-        <a href="index.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Личный кабинет <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-            {% if request.user.is_authenticated %}
-                {% if request.user.is_teacher %}
-                    <li><a href="/teacher-account/">Мой кабинет</a></li>
-                {% elif request.user.is_student %}
-                    <li><a href="/student-account/">Мой кабинет</a></li>
-                {% elif request.user.is_admin %}
-                    <li><a href="/admin-account/">Кабинет администратора</a></li>
-                {% endif %}
-                <li><a href="/profile/">Изменить мои данные</a></li>
-                <li class="divider"></li>
+{# sidebar mobile menu#}
+<ul class="side-nav" id="mobile-demo">
+    <li><a href="sass.html">Sass</a></li>
+    <li><a href="badges.html">Components</a></li>
+    <li><a href="collapsible.html">Javascript</a></li>
+    <li><a href="mobile.html">Mobile</a></li>
+</ul>
 
-                <li><a href="/logout/">Выйти</a></li>
-            {% else %}
-                <li><a href="/login/">Войти</a></li>
-                <li><a href="/register-teacher/">Зарегистрироваться как репетитор</a></li>
-                <li><a href="/register-student/">Зарегистрироваться как ученик</a></li>
-            {% endif %}
-        </ul>
-      </li>
-    </ul>
-  </div>
-</div>
+{# left menu#}
+<ul id="nav-mobile" class="left hide-on-med-and-down">
+    <li><a href="sass.html">Sass</a></li>
+    <li><a href="badges.html">Components</a></li>
+    <li><a href="collapsible.html">JavaScript</a></li>
+</ul>
+
+{# functionsality menu#}
+<ul id="nav-mobile" class="right hide-on-med-and-down">
+  <li><a name="">{{ request.user.email }} - id: {{ request.user.id }} - profile_id: {{ request.user.get_profile.id }}</a></li>
+  <li>
+      <a class="dropdown-button" href="#!" data-activates="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a>
+      <ul id="dropdown1" class="dropdown-content">
+          {% if request.user.is_authenticated %}
+              {% if request.user.is_teacher %}
+                  <li><a href="/teacher-account/">Мой кабинет</a></li>
+              {% elif request.user.is_student %}
+                  <li><a href="/student-account/">Мой кабинет</a></li>
+              {% elif request.user.is_admin %}
+                  <li><a href="/admin-account/">Кабинет администратора</a></li>
+              {% endif %}
+              <li><a href="/profile/">Изменить мои данные</a></li>
+              <li class="divider"></li>
+
+              <li><a href="/logout/">Выйти</a></li>
+          {% else %}
+              <li><a href="/login/">Войти</a></li>
+              <li><a href="/register-teacher/">Зарегистрироваться как репетитор</a></li>
+              <li><a href="/register-student/">Зарегистрироваться как ученик</a></li>
+          {% endif %}
+      </ul>
+  </li>
+</ul>

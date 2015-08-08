@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import datetime
+import pytz
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from rest_framework import permissions, viewsets, status, views
@@ -12,7 +14,8 @@ from project.settings import ADMIN_EMAIL
 from django.core.mail import send_mail, EmailMultiAlternatives
 from robokassa.signals import result_received
 
-from relationships.models import Order
+from relationships.models import Order, Comments, Offer, CommentsOffer, Announcement, Subject
+from relationships import relationships
 from authentication.models import Account, TeacherProfile, StudentProfile, repopulateProfile, populateAccountData
 from authentication.forms import LoginForm, RegisterForm, TeacherProfileForm, StudentProfileForm
 from authentication.permissions import IsAccountOwner
@@ -234,16 +237,58 @@ class TeacherAccountView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated() and request.user.is_teacher:  # если есть созданный профиль
             teacher = request.user.get_profile()
-            orders = Order.objects.filter(teacher=teacher)
+            orders = []
+            try:
+                """удаляем объекты заказов если учитель протупил больше 3 дней"""
+                new_date = pytz.UTC.localize(datetime.datetime.now())
+                tmp_orders = Order.objects.filter(teacher=teacher)
+                for order in tmp_orders:
+                    difference = new_date - order.date
+                    if difference.days > 2 and order.status == '':
+                        order.delete()
+                    else:
+                        orders.append(order)
+            except:
+                pass
+
             for order in orders:
                 order.form = RobokassaForm(initial={
                     'OutSum': order.price,
                     'InvId': order.id,
                 })
+                try:
+                    order.comments = Comments.objects.filter(order=order)
+                    order.advt = order.announcement.all()[0]
+                except:
+                    pass
+            offers = Offer.objects.filter(teacher=teacher)
+            for offer in offers:
+                offer.comments = CommentsOffer.objects.filter(offer=offer)
+                offer.advt = offer.announcement.all()[0]
         return render_to_response(self.template_name, locals(), context_instance=RequestContext(request))
 
     def post(self, request):
-        return render_to_response(self.template_name, locals(), context_instance=RequestContext(request))
+        if 'order_comment' in request.POST and request.user.is_teacher:
+            comment = Comments()
+            comment.account = request.user
+            comment.order_id = request.POST['order_id']
+            comment.text = request.POST['comment_text']
+            comment.save()
+        if 'offer_comment' in request.POST and request.user.is_teacher:
+            comment = CommentsOffer()
+            comment.account = request.user
+            comment.offer_id = request.POST['offer_id']
+            comment.text = request.POST['comment_text']
+            comment.save()
+        if 'status_active' in request.POST and request.user.is_teacher:
+            order = Order.objects.get(id=request.POST['order_id'])
+            order.status = 'is_active'
+            order.save()
+        if 'status_cansel' in request.POST and request.user.is_teacher:
+            order = Order.objects.get(id=request.POST['order_id'])
+            order.status = 'is_canseled'
+            order.save()
+        return HttpResponseRedirect('/teacher-account/')
 
 
 class StudentAccountView(TemplateView):
@@ -253,9 +298,45 @@ class StudentAccountView(TemplateView):
         if request.user.is_authenticated() and request.user.is_student:  # если есть созданный профиль
             student = request.user.get_profile()
             orders = Order.objects.filter(student=student)
+            offers = Offer.objects.filter(student=student)
+            subjects = Subject.objects.all()
+            announcements = Announcement.objects.filter(student=student)
+            for offer in offers:
+                offer.advt = offer.announcement.all()[0]
         return render_to_response(self.template_name, locals(), context_instance=RequestContext(request))
 
     def post(self, request):
+        if 'offer_to_order' in request.POST and request.user.is_student:
+            teacher = TeacherProfile.objects.get(id=request.POST['id'])
+            student = request.user.get_profile()
+            offer = Offer.objects.get(id=request.POST['offer_id'])
+            announcement = offer.announcement.all()[0]
+
+            """функция relationships.create_order создает заказ и возвращает сообщение с результатом"""
+            relationships.create_order(teacher, student, announcement)
+
+            offer.is_mutate = True
+            offer.save()
+            message = 'Ваши контактные данные были отправлены репетитору, в ближайшее время с Вами свяжутся.'
+        if 'annoucement' in request.POST and request.user.is_student:
+            announcement = Announcement()
+            announcement.student = request.user.get_profile()
+            announcement.subject = Subject.objects.get(id=request.POST['subject'])
+            announcement.text = request.POST['text']
+            announcement.status = request.POST['status']
+            announcement.save()
+            return HttpResponseRedirect('/student-account/')
+        if 'announcement_status_on' in request.POST and request.user.is_student:
+            announcement = Announcement.objects.get(id=request.POST['announcement_id'])
+            announcement.status = 'is_active'
+            announcement.save()
+            return HttpResponseRedirect('/student-account/')
+        else:
+            announcement = Announcement.objects.get(id=request.POST['announcement_id'])
+            announcement.status = 'is_canseled'
+            announcement.save()
+            return HttpResponseRedirect('/student-account/')
+
         return render_to_response(self.template_name, locals(), context_instance=RequestContext(request))
 
 

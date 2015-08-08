@@ -2,43 +2,188 @@
 {% load static from staticfiles %}
 
 
-{% block page_js %}
-    <script type="text/javascript" src="{% static 'kastoreum/js/form_validate.js' %}"></script>
+{% block content %}
+    <div class="col-md-12">
+        <p>{{ message }}</p>
+        <div class="">
+            <h1>Ваш аккаунт, репетитор - {{ request.user.email }}</h1>
+
+            {% if orders %}
+                <!-- Выводим все заказы учеников которые заказали данного учителя -->
+                <h2>Ученики ожидающие ответа</h2>
+                <div class="list-group">
+                    {% for order in orders %}
+                        <div class="list-group-item {% if order.status == 'is_canseled' %}disabled{% endif %}">
+                            <div class="row-picture">
+                                <img class="circle" src="{{ order.student.get_image_url }}" alt="icon">
+                            </div>
+                            <div class="row-content">
+                                <div class="col-md-5">
+                                    <h4>{{ order.advt.subject.tittle }} - {{ order.advt.id }}</h4>
+                                    <h4 class="list-group-item-heading">{{ order.student.account.get_full_name }}</h4>
+                                    <p class="list-group-item-text">{{ order.date|date:"d.m.Y" }}</p>
+                                    <p class="list-group-item-text">Возраст: {{ order.student.age }}</p>
+                                    <p class="list-group-item-text">Телефон: {{ order.student.account.phone }}</p>
+                                </div>
+                                <!-- Статусы заказов которые ожидают ученики -->
+                                <div class="col-md-7">
+                                    <p>
+                                        <b>статус:</b>
+                                        {% if order.status == '' %}
+                                            В ожидании
+                                        {% elif order.status == 'is_active' %}
+                                            Ученик принят
+                                        {% elif order.status == 'is_canseled' %}
+                                            Ученику отказано
+                                        {% elif order.status == 'is_paid' %}
+                                            Успешные отношения
+                                        {% elif order.status == 'is_fail' %}
+                                            Отношения прерваны
+                                        {% endif %}
+                                    </p>
+                                    <!-- Возможность комментирования если в заявке не отказано
+                                    javascript формируется на базе id тоже по циклу (внизу страницы)
+                                    необходимо что бы прошла инициализация всех кнопочек добавления комментариев -->
+                                    {% if order.status != 'is_canseled' %}
+                                        <div class="qutton" id="qutton_comment{{ order.id }}">
+                                            <div class="qutton_dialog" id="commentDialog" style="display: none;">
+                                                <form class="" action="." method="post">{% csrf_token %}
+                                                    <h3>Оставить вспомогательный комметнарий</h3>
+                                                    <input type="hidden" name="order_id" value="{{ order.id }}">
+                                                    <textarea name="comment_text" rows="8" cols="47"></textarea>
+                                                    <input type="submit" name="order_comment" class="btn btn-primary full-width" value="Написать комментарий">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <!-- Выводим кнопки управления и опланы заказов и в соответствии с нвыбором
+                                    меняем статус заказа
+                                    пишем в базу измененый статус заказа -->
+                                    {% if order.status == 'is_active' %}
+                                        <form action="{{ order.form.target }}" method="POST">
+                                            <p>{{ order.form.as_p }}</p>
+                                            <input type="submit" class="btn btn-success" value="Оплатить">
+                                        </form>
+                                    {% elif order.status == '' %}
+                                        <form style="float:left;" action="." method="POST">{% csrf_token %}
+                                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                                            <input type="submit" name="status_active" class="btn btn-success" value="Принять ученика">
+                                        </form>
+                                        <form style="float:left;" action="." method="POST">{% csrf_token %}
+                                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                                            <input type="submit" name="status_cansel" class="btn btn-success" value="Отказаться">
+                                        </form>
+                                    {% elif order.status = 'is_active' %}
+                                        <form action="." method="POST">{% csrf_token %}
+                                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                                            <input type="submit" name="status_fail" class="btn btn-error" value="Прервать">
+                                        </form>
+                                    {% endif %}
+                                </div>
+                                <!-- Выводим комментарии к заказу
+                                комментарии вспомогательные, т.е. не несут коммуникативной функции между пользователями -->
+                                <div class="col-md-12">
+                                    {% for comment in order.comments %}
+                                        <p class="comment">
+                                            <i class="fa fa-comment-o"></i>
+                                            {{ comment.text }}
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-separator"></div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if offers %}
+                <!-- Выводим всех учеников которым данный репетитор отправил запрос на заказ -->
+                <h2>Ваши предложения ученикам</h2>
+                <div class="list-group">
+                    {% for offer in offers %}
+                        {% if not offer.is_mutate %}
+                        <div class="list-group-item">
+                            <div class="row-picture">
+                                <img class="circle" src="{{ offer.student.get_image_url }}" alt="icon">
+                            </div>
+                            <div class="row-content">
+                                <!-- Показываем данные ученика кроме телефона -->
+                                <div class="col-md-12">
+                                    <h4 class="list-group-item-heading">{{ offer.advt.subject.title }}</h4>
+                                    <p class="list-group-item-text">Возраст: {{ offer.advt.text }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4 class="list-group-item-heading">{{ offer.student.account.get_full_name }}</h4>
+                                    <p class="list-group-item-text">Возраст: {{ offer.student.age }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Возможность комментирования запроса
+                                    javascript формируется на базе id тоже по циклу (внизу страницы)
+                                    необходимо что бы прошла инициализация всех кнопочек добавления комментариев -->
+                                    <div class="qutton" id="qutton_comment_offer{{ offer.id }}">
+                                        <div class="qutton_dialog" id="commentDialog" style="display: none;">
+                                            <form class="" action="." method="post">{% csrf_token %}
+                                                <h3>Оставить вспомогательный комметнарий</h3>
+                                                <input type="hidden" name="offer_id" value="{{ offer.id }}">
+                                                <textarea name="comment_text" rows="8" cols="47"></textarea>
+                                                <input type="submit" name="offer_comment" class="btn btn-primary full-width" value="Написать комментарий">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <!-- Выводим комментарии к запросу
+                                    комментарии вспомогательные, т.е. не несут коммуникативной функции между пользователями -->
+                                    {% for comment in offer.comments %}
+                                        <p class="comment">
+                                            <i class="fa fa-comment-o"></i>
+                                            {{ comment.text }}
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-separator"></div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
 {% endblock %}
 
 
-{% block content %}
-
-<div class="col-md-12">
-    <p>{{ message }}</p>
-    <div class="">
-        <h1>Ваш аккаунт, репетитор - {{ request.user.email }}</h1>
-        <h3>Ваши текущие репетиторства</h3>
-        <div class="list-group">
+{% block page_js %}
+    <script type="text/javascript">
+        (function() {
+            'use strict';
+            // For the Sharing button
             {% for order in orders %}
-                <div class="list-group-item">
-                    <div class="row-picture">
-                        <img class="circle" src="{{ order.student.get_image_url }}" alt="icon">
-                    </div>
-                    <div class="row-content">
-                        <div class="col-md-6">
-                            <h4 class="list-group-item-heading">{{ order.student.account.get_full_name }}</h4>
-                            <p class="list-group-item-text">Возраст: {{ order.student.age }}</p>
-                            <p class="list-group-item-text">Телефон: {{ order.student.account.phone }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <form action="{{ order.form.target }}" method="POST">
-                                <p>{{ order.form.as_p }}</p>
-                                <input type="submit" class="btn btn-warning" value="Оплатить">
-                            </form>
-                            <a href="" class="btn btn-primary">Оставить сообщение пользователю</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="list-group-separator"></div>
+                {% if order.status != 'is_canseled' %}
+                    var quttonComment= Qutton.getInstance($('#qutton_comment{{ order.id }}'));
+                    quttonComment.init({
+                        icon : '/static/lib/quttons/icon_comment.png',
+                        backgroundColor : "#41AAF1",
+                        borderRadius : 2,
+                        width: 36,
+                        height: 36,
+                    });
+                {% endif %}
             {% endfor %}
-        </div>
-    </div>
-</div>
-
+            {% for offer in offers %}
+                {% if not offer.is_mutate %}
+                    var quttonComment= Qutton.getInstance($('#qutton_comment_offer{{ offer.id }}'));
+                    quttonComment.init({
+                        icon : '/static/lib/quttons/icon_comment.png',
+                        backgroundColor : "#41AAF1",
+                        borderRadius : 2,
+                        width: 36,
+                        height: 36,
+                    });
+                {% endif %}
+            {% endfor %}
+        })();
+    </script>
 {% endblock %}

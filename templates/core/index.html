@@ -1,54 +1,113 @@
 {% extends "base.html" %}
 
+{% block page_js %}
+    {# // <script type="text/javascript" src="{% static 'kastoreum/js/form_validate.js' %}"></script>#}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.modal-trigger').leanModal();
+            $('select').material_select();
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
     {# <div class="container">#}
+
         <div class="row">
-            <div class="col-md-12">
+            <div class="col s12">
 
-                <h1>Привет, {{ request.user }} это главная</h1>
-                {{request.user.get_profile}}
+                <h1>Главная страница</h1>
 
-                <h3>Преподаватели:</h3>
-                <div class="list-group">
-                    {% for teacher in teachers %}
-                        <div class="list-group-item">
-                            <div class="row-picture">
+                {% if message %}
+                    <div class="alert alert-dismissable alert-success">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {{ message }}.
+                    </div>
+                {% endif %}
+
+                {% if teachers %}
+                    <h2>Преподаватели:</h2>
+                    <ul class="collection">
+                        {% for teacher in teachers %}
+                            <li class="collection-item avatar">
                                 <img class="circle" src="{{ teacher.get_image_url }}" alt="icon">
-                            </div>
-                            <div class="row-content">
-                                <div class="col-md-6">
-                                    <h4 class="list-group-item-heading">{{ teacher.account.get_full_name }}</h4>
-                                    <p class="list-group-item-text">Предмет: {{ teacher.subject }}</p>
-                                    <p class="list-group-item-text">Стаж: {{ teacher.skill }}</p>
-                                    {# <p class="list-group-item-text">Телефон: {{ teacher.account.phone }}</p>#}
-                                </div>
-                                {% if request.user.is_student %}
-                                    <div class="col-md-6">
-                                        <form class="pull-left" action="" method="post">{% csrf_token %}
-                                            <input type="hidden" name="id" value="{{teacher.id}}">
-                                            <input class="btn btn-primary" type="submit" name="order" value="Заказать">
-                                        </form>
-                                        <a href="#" class="btn btn-success">Задать вопрос</a>
+                                <div class="row">
+                                    <div class="col s6">
+                                        <span class="title">{{ teacher.account.get_full_name }}</span>
+                                        <p>Предмет: {{ teacher.subject }}</p>
+                                        <p>Стаж: {{ teacher.skill }}</p>
+                                        <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
                                     </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="list-group-separator"></div>
-                    {% endfor %}
-                </div>
 
-                {% if request.user.get_profile.is_teacher %}
-                    <h3>Учащиеся:</h3>
+                                    {% if request.user.is_student %}
+                                        <!-- Modal Trigger -->
+                                        <div class="col s6">
+                                            <a class="modal-trigger waves-effect waves-light btn" href="#order_modal">Заказать</a>
+                                        </div>
+                                        <!-- Modal Structure -->
+                                        <div id="order_modal" class="modal">
+                                            <form class="" action="" method="post">{% csrf_token %}
+                                                <div class="modal-content">
+                                                    <h4>Отправить заявку репетитору</h4>
+                                                    <div class="row">
+                                                        <div class="col s6">
+                                                            <input type="hidden" name="id" value="{{teacher.id}}">
+                                                            {# <h4>Привязать к существующему объявлению</h4>#}
+                                                            <div class="input-field col s12">
+                                                                <select name="announcement_exist" placeholder="Выбор предмета">
+                                                                    <option value="" disabled selected>Выберите заявку</option>
+                                                                    {% for announcement in announcements %}
+                                                                        <option value="{{ announcement.id }}">{{ announcement.subject.title }} - {{ announcement.id }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                                <label>Materialize Select</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col s6">
+                                                            <p>Что бы отправить заявку учителю необходимо создать новое объявление в личном кабинете. После этого Вы сможете выбрать его в данном окне.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a type="submit" name="order" class="modal-action waves-effect waves-light btn margin-6-3">Заказать</a>
+                                                    <a href="" class="modal-action modal-close waves-effect waves-light btn margin-6-3">Закрыть</a>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% if request.user.get_profile.is_teacher and announcements  %}
+                    <h2>Учащиеся:</h2>
                     <div class="list-group">
-                        {% for student in students %}
+                        {% for announcement in announcements %}
                             <div class="list-group-item">
                                 <div class="row-picture">
-                                    <img class="circle" src="{{ student.get_image_url }}" alt="icon">
+                                    <img class="circle" src="{{ announcement.student.get_image_url }}" alt="icon">
                                 </div>
                                 <div class="row-content">
-                                    <h4 class="list-group-item-heading">{{ student.account.get_full_name }}</h4>
-                                    <p class="list-group-item-text">Возраст: {{ student.age }}</p>
-                                    {# <p class="list-group-item-text">Телефон: {{ student.account.phone }}</p>#}
+                                    <div class="col s12">
+                                        <h4>Предмет: {{ announcement.subject.title }} - {{ announcement.id }}</h4>
+                                        <p class="list-group-item-text">Комментарий к объявлению: {{ announcement.text }}</p>
+                                    </div>
+                                    <div class="col s6">
+                                        <h4 class="list-group-item-heading">{{ announcement.student.account.get_full_name }}</h4>
+                                        <p class="list-group-item-text">Возраст: {{ announcement.student.age }}</p>
+                                        {# <p class="list-group-item-text">Телефон: {{ student.account.phone }}</p>#}
+                                    </div>
+                                    <div class="col s6">
+                                        <form action="." method="post">{% csrf_token %}
+                                            <input type="hidden" name="student_id" value="{{ announcement.student.id }}">
+                                            <input type="hidden" name="announcement_id" value="{{ announcement.id }}">
+                                            <input type="submit" class="btn btn-success" name="offer" value="Отправить предложение">
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                             <div class="list-group-separator"></div>
