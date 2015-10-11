@@ -4,4 +4,5 @@ from ceiling.views import CeilingView
 
 urlpatterns = patterns('',
     url('^$', CeilingView.as_view(), name='ceiling'),
+    url('^api/$', CeilingView.as_view(), name='ceiling'),
 )

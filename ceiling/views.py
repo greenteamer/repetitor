@@ -4,6 +4,29 @@ from django.shortcuts import render, render_to_response, RequestContext
 from django.views.generic.base import TemplateView
 from PIL import Image, ImageDraw
 import urllib
+from django.views.decorators.csrf import csrf_protect
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+from rest_framework.decorators import api_view
+from rest_framework import serializers, viewsets
+
+from authentication.models import Account, TeacherProfile
+
+
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeacherProfile
+        fields = ('id', 'subject')
+
+
+class CeilingRequest(viewsets.ModelViewSet):
+    queryset = TeacherProfile.objects.all()
+    serializer_class = AccountSerializer
+    #  def get(self, request, format=None):
+    #     accounts = [account.username for account in Account.objects.all()]
+    #     return Response(accounts)
 
 
 class CeilingView(TemplateView):

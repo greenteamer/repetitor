@@ -121,24 +121,19 @@ TEMPLATE_DIRS = (
 )
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-    ),
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
-
-ROBOKASSA_LOGIN = 'repetitor_tomsk'
-ROBOKASSA_PASSWORD1 = 'LKJHsdIvl3kvbsklas234fe2ye2sdfg93'
-ROBOKASSA_PASSWORD2 = 'dIvl3kv984Kfsk3o234fe2y'
-ROBOKASSA_TEST_MODE = True
 
 # SOCKETIO_HOST = 'repetitor.django.forward70.ru'
 # SOCKETIO_PORT = '9000'
